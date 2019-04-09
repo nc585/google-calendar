@@ -34,8 +34,14 @@ def main():
 
     service = build('calendar', 'v3', credentials=creds)
 
-    #insert question asking users if they have added the Georgetown University events calendar herer
-    #https://guevents.georgetown.edu/calendar
+    print(" ")
+    print("* * * * * * * * * * * * * * * * *")
+    print("Welcome to the GUCal Python App!")
+    print("* * * * * * * * * * * * * * * * *")
+    #make this dynamic 
+    print("Please ensure you have added the official Georgetown University Google Calendar to your personal Gmail account.")
+    print("You can access the calendar here: https://guevents.georgetown.edu/calendar")
+    print(" ")
 
     # Call the Calendar API
     now = datetime.datetime.utcnow().isoformat() + 'Z' # 'Z' indicates UTC time
@@ -50,6 +56,11 @@ def main():
     for event in events:
         start = event['start'].get('dateTime', event['start'].get('date'))
         print(start, event['summary'])
+
+    print(" ")
+    print("Would you like to know more about these events? If so, please enter the number you are interested in. For example, the first event listed would be '1' ")
+    #print only one of the Georgetown Calendar events 
+    #todo: change [0] to inputted number from user - print(events_result['items'][0]['description'])
 
 if __name__ == '__main__':
     main()
