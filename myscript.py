@@ -38,8 +38,11 @@ def main():
     print("* * * * * * * * * * * * * * * * *")
     print("Welcome to the GUCal Python App!")
     print("* * * * * * * * * * * * * * * * *")
+    print(" ")
+
     #make this dynamic 
-    print("Please ensure you have added the official Georgetown University Google Calendar to your personal Gmail account.")
+    print("Have you added the official Georgetown University Google Calendar to your personal Gmail account?")
+    
     print("You can access the calendar here: https://guevents.georgetown.edu/calendar")
     print(" ")
 
@@ -56,7 +59,7 @@ def main():
     for event in events:
         start = event['start'].get('dateTime', event['start'].get('date'))
         print(start, event['summary'])
-
+    
     print(" ")
     print("Would you like to know more about these events? If so, please enter the number you are interested in. For example, the first event listed would be '1' ")
     #print only one of the Georgetown Calendar events 
