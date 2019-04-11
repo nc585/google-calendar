@@ -43,6 +43,7 @@ def main():
     # Call the Calendar API
     now = datetime.datetime.utcnow().isoformat() + 'Z' # 'Z' indicates UTC time
     print('Here are the next 10 events in the Georgetown Calendar:')
+    print(" ")
     events_result = service.events().list(calendarId='46gnvciofevvvsrrjpf8qri3j52njfun@import.calendar.google.com', 
                                         timeMin=now,
                                         maxResults=10, 
@@ -54,12 +55,14 @@ def main():
         start = event['start'].get('dateTime', event['start'].get('date'))
         # TODO: add an event number if possible
         print(start, event['summary'])
+
+   # print(events_result['items'][0])    
     
     print(" ")    
     event_descriptions = []
     while True:
-        selected_event = input("Would you like to know more about these events? If so, please select an event (1-10) or 'DONE' if there are no more events: ")
-        if selected_event == "DONE":
+        selected_event = input("Would you like to know more about these events? If so, please select an event (1-10) or 'X' if there are no more events: ")
+        if selected_event == "X":
             break
         if not selected_event.isdigit():
             print("Please enter a valid event number")
@@ -68,8 +71,12 @@ def main():
         else:  
             event_descriptions.append(selected_event)
     
-    #print only one of the Georgetown Calendar events 
+    print("* * * * * * * * * * * * * * * * *")
 
+    #TODO: add name and number to the description 
+    for selected_event in event_descriptions:
+        print(events_result['items'][int(selected_event)-1]['description'])
+        print("------------")
 
     #todo: change [0] to inputted number from user - print(events_result['items'][0]['description'])
 
