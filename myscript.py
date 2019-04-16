@@ -9,14 +9,11 @@ from google.auth.transport.requests import Request
 # If modifying these scopes, delete the file token.pickle.
 SCOPES = ['https://www.googleapis.com/auth/calendar']
 
+# Google Calendar API basic functionality to pull the start time, date, and name of the next 10 events on a calendar
 def main():
-    """Shows basic usage of the Google Calendar API.
-    Prints the start and name of the next 10 events on the user's calendar.
-    """
     creds = None
-    # The file token.pickle stores the user's access and refresh tokens, and is
-    # created automatically when the authorization flow completes for the first
-    # time.
+    # The file token.pickle stores the user's access and refresh tokens, and is created automatically when the 
+    # authorization flow completes for the first time.
     if os.path.exists('token.pickle'):
         with open('token.pickle', 'rb') as token:
             creds = pickle.load(token)
@@ -43,7 +40,7 @@ def main():
     # Call the Calendar API
     now = datetime.datetime.utcnow().isoformat() + 'Z' #indicates UTC time
     
-    print('Here are the next 10 events in the Georgetown Calendar in UTC time:')
+    print('HERE ARE THE NEXT 10 EVENTS FROM THE GEORGETOWN CALENDAR IN UTC TIME:')
     print(" ")
     events_result = service.events().list(calendarId='46gnvciofevvvsrrjpf8qri3j52njfun@import.calendar.google.com', 
                                         timeMin=now,
@@ -56,40 +53,45 @@ def main():
     for event in events:
         i+=1
         start = event['start'].get('dateTime', event['start'].get('date'))
-        # TODO: add an event number if possible
         print(i,start, event['summary'])
         
     print(" ")    
+
+    # User will input the number of the event user is interested in learning more about
     event_descriptions = []
     while True:
-        selected_event = input("Would you like to know more about these events? If so, please select an event (1-10) or 'DONE' if there are no more events: ")
+        selected_event = input("WOULD YOU LIKE TO KNOW MORE ABOUT THESE EVENTS? IF SO, PLEASE SELECT AN EVENT SUCH AS '1' (1-10) OR 'DONE' IF THERE ARE NO MORE EVENTS: ")
         if selected_event == "DONE":
             break
         if not selected_event.isdigit():
-            print("Please enter a valid event number.")
+            print("PLEASE ENTER A VALID EVENT NUMBER.")
         if int(selected_event) not in range (1,11):
-            print("Please enter a valid event number from 1 to 10.")
+            print("PLEASE ENTER A VALID EVENT NUMBER FROM 1 TO 10.")
         else:  
             event_descriptions.append(selected_event)
-
+    
+    print(" ")
     print("* * * * * * * * * * * * * * * * *")
     
     for selected_event in event_descriptions:
-        print(events_result['items'][int(selected_event)-1]['summary'],'\n',events_result['items'][int(selected_event)-1]['description'])
-        print("------------")
+        print(events_result['items'][int(selected_event)-1]['summary'])
+        print(events_result['items'][int(selected_event)-1]['description'])
+        print(" ")
+        print("* * * * * * * * * * * * * * * * *")
 
+    # User can create event in their personal Google calendar 
     while True:
-        create_event = input("Would you like to create an event reminder in your Google calendar? If so, please type 'YES'. If not, please type 'NO'.")
+        create_event = input("WOULD YOU LIKE TO CREATE AN EVENT REMINDER IN YOUR GOOGLE CALENDAR? IF SO, PLEASE TYPE 'YES'. IF NOT, PLEASE TYPE 'NO'.")
         if create_event == "NO":
             break
         else:  
-            event_summary = input("Please enter event name:")
-            event_location = input("Please enter event location:")
-            event_desc = input("Please enter event description of your choice:")
-            event_start = input("Please enter event start date in the following format, 'YYYY-MM-DD':")
-            event_time_start = input ("Please enter start time of event in the following format, 'HH:MM:SS':")
-            event_end = input("Please enter event end date in the following format, 'YYYY-MM-DD':")
-            event_time_end = input ("Please enter end time of event in the following format, 'HH:MM:SS':")
+            event_summary = input("PLEASE ENTER EVENT NAME:")
+            event_location = input("PLEASE ENTER EVENT LOCATION:")
+            event_desc = input("PLEASE ENTER EVENT DESCRIPTION OF YOUR CHOICE:")
+            event_start = input("PLEASE ENTER EVENT START DATE IN THIS FORMAT, 'YYYY-MM-DD':")
+            event_time_start = input ("PLEASE ENTER START TIME OF EVENT IN MILITARY TIME FORMAT, 'HH:MM:SS':")
+            event_end = input("PLEASE ENTER EVENT END DATE IN THIS FORMAT, 'YYYY-MM-DD':")
+            event_time_end = input ("PLEASE ENTER END TIME OF EVENT IN MILITARY TIME FORMAT, 'HH:MM:SS':")
             event = {
                 'summary': event_summary,
                 'location': event_location,
