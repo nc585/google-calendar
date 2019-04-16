@@ -41,8 +41,9 @@ def main():
     print(" ")
 
     # Call the Calendar API
-    now = datetime.datetime.utcnow().isoformat() + 'Z' # 'Z' indicates UTC time
-    print('Here are the next 10 events in the Georgetown Calendar:')
+    now = datetime.datetime.utcnow().isoformat() + 'Z' #indicates UTC time
+    
+    print('Here are the next 10 events in the Georgetown Calendar in UTC time:')
     print(" ")
     events_result = service.events().list(calendarId='46gnvciofevvvsrrjpf8qri3j52njfun@import.calendar.google.com', 
                                         timeMin=now,
@@ -51,10 +52,12 @@ def main():
                                         orderBy='startTime'
                                         ).execute()
     events = events_result.get('items', [])
+    i=0
     for event in events:
+        i+=1
         start = event['start'].get('dateTime', event['start'].get('date'))
         # TODO: add an event number if possible
-        print(start, event['summary'])
+        print(i,start, event['summary'])
         
     print(" ")    
     event_descriptions = []
@@ -68,15 +71,13 @@ def main():
             print("Please enter a valid event number from 1 to 10.")
         else:  
             event_descriptions.append(selected_event)
-    
-    print("* * * * * * * * * * * * * * * * *")
 
-    #TODO: add name and number to the description 
+    print("* * * * * * * * * * * * * * * * *")
+    
     for selected_event in event_descriptions:
-        print(events_result['items'][int(selected_event)-1]['description'])
+        print(events_result['items'][int(selected_event)-1]['summary'],'\n',events_result['items'][int(selected_event)-1]['description'])
         print("------------")
 
-#TODO: give user option to create event reminder
     while True:
         create_event = input("Would you like to create an event reminder in your Google calendar? If so, please type 'YES'. If not, please type 'NO'.")
         if create_event == "NO":
@@ -85,10 +86,10 @@ def main():
             event_summary = input("Please enter event name:")
             event_location = input("Please enter event location:")
             event_desc = input("Please enter event description of your choice:")
-            event_start = input("Please enter event start date in the following format, YYYY-MM-DD:")
-            event_time_start = input ("Please enter start time of event in the following format, HH-MM-SS:")
-            event_end = input("Please enter event end date in the following format, YYYY-MM-DD:")
-            event_time_end = input ("Please enter end time of event in the following format, HH-MM-SS:")
+            event_start = input("Please enter event start date in the following format, 'YYYY-MM-DD':")
+            event_time_start = input ("Please enter start time of event in the following format, 'HH:MM:SS':")
+            event_end = input("Please enter event end date in the following format, 'YYYY-MM-DD':")
+            event_time_end = input ("Please enter end time of event in the following format, 'HH:MM:SS':")
             event = {
                 'summary': event_summary,
                 'location': event_location,
